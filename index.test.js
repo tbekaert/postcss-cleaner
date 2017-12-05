@@ -40,7 +40,11 @@ it('return same CSS and a warning if opts.sources is not an array', () => {
 
 it('remove unused css in html sources', () => {
     return run('.foo{ } .bar{ } .baz{ }', '.foo{ } .baz{ }', {
-        raw: '<div class="foo"><p class="baz">Lorem</p></div>'
+        raw: `
+          <div class="foo">
+            <p class="baz">Lorem</p>
+          </div>
+        `
     });
 });
 
@@ -60,20 +64,82 @@ it('remove unused css in js sources', () => {
     });
 });
 
+it('remove unused selector in rule', () => {
+    return run('.foo, .bar, .baz{ }', '.foo, .bar{ }', {
+        raw: `
+          <div class="foo">
+            <p class="bar">Lorem</p>
+          </div>
+        `
+    });
+});
+
+it('remove unused multi selector in rule', () => {
+    return run('th td, tr td{ }', 'tr td{ }', {
+        raw: `
+          <table>
+            <tr>
+              <td>Cell</td>
+            </tr>
+          </table
+        `
+    });
+});
+
+it('remove unused selector if any selector is not found', () => {
+    return run('.foo .bar, .foo .baz{ }', '.foo .baz{ }', {
+        raw: `
+          <div class="foo">
+            <p class="baz">Lorem</p>
+          </div>
+        `
+    });
+});
+
 /**
  * Ignorance
  */
 
 it('ignore rule based on string', () => {
     return run('.foo{ } .bar{ } .baz{ }', '.bar{ }', {
-        raw: '<div class="a"><p class="b">Lorem</p></div>',
+        raw: `
+          <div class="a">
+            <p class="b">Lorem</p>
+          </div>
+        `,
         ignore: ['.bar']
     });
 });
 
 it('ignore rule based on regex', () => {
     return run('.foo{ } .bar{ } .baz{ }', '.bar{ } .baz{ }', {
-        raw: '<div class="a"><p class="b">Lorem</p></div>',
+        raw: `
+          <div class="a">
+            <p class="b">Lorem</p>
+          </div>
+        `,
         ignore: [/ba/]
     });
+});
+
+it('ignore rule based on comment', () => {
+    return run(
+        `
+            .foo{ }
+
+            /* css-cleaner:ignore on */
+            .bar{ }
+            /* css-cleaner:ignore off */
+
+            .baz{ }
+        `,
+        `
+            /* css-cleaner:ignore on */
+            .bar{ }
+            /* css-cleaner:ignore off */
+        `,
+        {
+            raw: '<div></div>'
+        }
+    );
 });

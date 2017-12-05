@@ -4,7 +4,7 @@ let postcss = require('postcss');
 let glob = require('glob');
 let fs = require('fs');
 
-module.exports = postcss.plugin('postcss-css-cleaner', opts => {
+module.exports = postcss.plugin('postcss-cleaner', opts => {
     opts = opts || {};
 
     let log = function(type, args) {
@@ -57,7 +57,7 @@ module.exports = postcss.plugin('postcss-css-cleaner', opts => {
         }
         root.walk(rule => {
             if (rule.type === 'comment') {
-                if (rule.text.indexOf('css-cleaner:ignore') > -1) {
+                if (rule.text.indexOf('postcss-cleaner:ignore') > -1) {
                     isActive = !(rule.text.indexOf('on') > -1);
                 }
             } else if (rule.type === 'rule') {

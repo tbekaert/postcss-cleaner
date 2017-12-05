@@ -1,15 +1,15 @@
 {
-  "name": "postcss-css-cleaner",
+  "name": "postcss-cleaner",
   "version": "0.0.0",
   "description": "PostCSS plugin to clean unused CSS",
   "keywords": ["postcss", "css", "postcss-plugin", "clean", "cleaner"],
   "author": "Thomas <tbekaert@siliconsalad.com>",
   "license": "MIT",
-  "repository": "tbekaert/postcss-css-cleaner",
+  "repository": "tbekaert/postcss-cleaner",
   "bugs": {
-    "url": "https://github.com/tbekaert/postcss-css-cleaner/issues"
+    "url": "https://github.com/tbekaert/postcss-cleaner/issues"
   },
-  "homepage": "https://github.com/tbekaert/postcss-css-cleaner",
+  "homepage": "https://github.com/tbekaert/postcss-cleaner",
   "dependencies": {
     "postcss": "^6.0.1"
   },

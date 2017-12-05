@@ -127,16 +127,16 @@ it('ignore rule based on comment', () => {
         `
             .foo{ }
 
-            /* css-cleaner:ignore on */
+            /* postcss-cleaner:ignore on */
             .bar{ }
-            /* css-cleaner:ignore off */
+            /* postcss-cleaner:ignore off */
 
             .baz{ }
         `,
         `
-            /* css-cleaner:ignore on */
+            /* postcss-cleaner:ignore on */
             .bar{ }
-            /* css-cleaner:ignore off */
+            /* postcss-cleaner:ignore off */
         `,
         {
             raw: '<div></div>'

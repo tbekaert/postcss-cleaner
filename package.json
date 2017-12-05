@@ -1,6 +1,6 @@
 {
-  "name": "postcss-css-cleaner",
-  "version": "0.0.0",
+  "name": "postcss-cleaner",
+  "version": "1.0.0",
   "description": "PostCSS plugin to clean unused CSS",
   "keywords": [
     "postcss",
@@ -11,26 +11,32 @@
   ],
   "author": "Thomas <tbekaert@siliconsalad.com>",
   "license": "MIT",
-  "repository": "tbekaert/postcss-css-cleaner",
+  "repository": "tbekaert/postcss-cleaner",
   "bugs": {
-    "url": "https://github.com/tbekaert/postcss-css-cleaner/issues"
+    "url": "https://github.com/tbekaert/postcss-cleaner/issues"
   },
-  "homepage": "https://github.com/tbekaert/postcss-css-cleaner",
+  "homepage": "https://github.com/tbekaert/postcss-cleaner",
   "dependencies": {
     "postcss": "^6.0.1"
   },
   "devDependencies": {
-    "eslint": "^3.19.0",
+    "eslint": "^4.12.1",
     "eslint-config-postcss": "^2.0.2",
-    "jest": "^20.0.0"
+    "jest": "^21.2.1"
   },
   "scripts": {
     "test": "jest && eslint *.js"
   },
   "eslintConfig": {
-    "extends": "eslint-config-postcss/es5",
+    "extends": "eslint-config-postcss",
     "env": {
       "jest": true
+    },
+    "rules": {
+      "no-extra-parens": 0,
+      "space-before-function-paren": 0,
+      "operator-linebreak": 0,
+      "max-len": 0
     }
   }
 }

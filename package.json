@@ -1,8 +1,14 @@
 {
   "name": "postcss-cleaner",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "PostCSS plugin to clean unused CSS",
-  "keywords": ["postcss", "css", "postcss-plugin", "clean", "cleaner"],
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "clean",
+    "cleaner"
+  ],
   "author": "Thomas <tbekaert@siliconsalad.com>",
   "license": "MIT",
   "repository": "tbekaert/postcss-cleaner",

@@ -14,9 +14,9 @@
     "postcss": "^6.0.1"
   },
   "devDependencies": {
-    "eslint": "^3.19.0",
+    "eslint": "^4.12.1",
     "eslint-config-postcss": "^2.0.2",
-    "jest": "^20.0.0"
+    "jest": "^21.2.1"
   },
   "scripts": {
     "test": "jest && eslint *.js"
@@ -29,7 +29,8 @@
     "rules": {
       "no-extra-parens": 0,
       "space-before-function-paren": 0,
-      "operator-linebreak": 0
+      "operator-linebreak": 0,
+      "max-len": 0
     }
   }
 }

@@ -20,17 +20,36 @@ function runError(input, output, opts) {
         });
 }
 
+function runLog(input, output, opts) {
+    let logs = [];
+    let storeLog = inputs => logs.push(inputs);
+    console.log = jest.fn(storeLog);
+
+    return postcss([plugin(opts)])
+        .process(input)
+        .then(result => {
+            expect(logs.join('\n')).toBe(output.join('\n'));
+            expect(result.warnings().length).toBe(0);
+        });
+}
+
 /**
  * Options
  */
 
 it('return same CSS and a warning if no sources provided', () => {
-    return runError('a{ }', 'a{ }', {});
+    return runError('a{ }', 'a{ }');
 });
 
 it('return same CSS and a warning if opts.sources is not an array', () => {
     return runError('a{ }', 'a{ }', {
         sources: 'lorem'
+    });
+});
+
+it('remove rules based on sources array', () => {
+    return run('.foo{ } .bar{ } .baz{ }', '.foo{ } .bar{ }', {
+        sources: ['source.html']
     });
 });
 
@@ -140,6 +159,51 @@ it('ignore rule based on comment', () => {
         `,
         {
             raw: '<div></div>'
+        }
+    );
+});
+
+/**
+ * Logs
+ */
+
+it('log source files', () => {
+    return runLog(
+        '.foo{ } .bar{ } .baz{ }',
+        ['=== Source files ===', 'source.html'],
+        {
+            sources: ['source.html'],
+            log: {
+                sourcesList: true
+            }
+        }
+    );
+});
+
+it('log removed rules', () => {
+    return runLog(
+        '.foo{ } .bar{ } .baz{ }',
+        ['Remove selector \'.bar\' line 1'],
+        {
+            raw:
+                '<div class="foo"><p class="baz">Lorem ipsum dolor sit amet.</p></div>',
+            log: {
+                removedRules: true
+            }
+        }
+    );
+});
+
+it('log ignored rules', () => {
+    return runLog(
+        '.foo{ } .bar{ } .baz{ }',
+        ['Ignore selector \'.foo\' line 1', 'Ignore selector \'.baz\' line 1'],
+        {
+            raw: '<div></div>',
+            ignore: ['.foo', '.baz'],
+            log: {
+                ignoredRules: true
+            }
         }
     );
 });

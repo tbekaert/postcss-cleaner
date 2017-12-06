@@ -61,7 +61,8 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
                 rule.text.indexOf('postcss-cleaner:ignore') > -1
             ) {
                 isActive = !(rule.text.indexOf('on') > -1);
-            } else if (rule.type === 'rule') {
+            }
+            if (rule.type === 'rule') {
                 if (!isActive) {
                     log('ignoredRules', [
                         `Ignore selector '${rule.selectors}' line ${
@@ -93,9 +94,9 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
                                             ? r.replace(/\.|#/g, '') === s
                                             : r.test(s);
                                     })
-                                    .reduce((r, b) => (r ? r : b), false);
+                                    .reduce((r, b) => r || b, false);
                             })
-                            .reduce((s, b) => (s ? s : b), false);
+                            .reduce((s, b) => s || b, false);
 
                         if (!isIgnored) {
                             let isFound = sel

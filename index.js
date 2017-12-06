@@ -56,10 +56,11 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
             return;
         }
         root.walk(rule => {
-            if (rule.type === 'comment') {
-                if (rule.text.indexOf('postcss-cleaner:ignore') > -1) {
-                    isActive = !(rule.text.indexOf('on') > -1);
-                }
+            if (
+                rule.type === 'comment' &&
+                rule.text.indexOf('postcss-cleaner:ignore') > -1
+            ) {
+                isActive = !(rule.text.indexOf('on') > -1);
             } else if (rule.type === 'rule') {
                 if (!isActive) {
                     log('ignoredRules', [
@@ -102,13 +103,12 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
                                 .reduce((s, b) => (!s ? s : b), true);
 
                             if (!isFound) {
-                                if (selectors[i]) {
+                                selectors[i] &&
                                     log('removedRules', [
                                         `Remove selector '${
                                             selectors[i]
                                         }' line ${rule.source.start.line}`
                                     ]);
-                                }
                                 selectors.splice(i, 1);
                             }
                         } else {

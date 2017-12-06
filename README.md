@@ -6,6 +6,7 @@
 
 [![Build Status][ci-img]][ci] [![Dependencies][dep-img]][dep]
 [![Dependencies][depdev-img]][depdev]
+[![Coverage Status][coveralls-img]][coveralls]
 
 [postcss]: https://github.com/postcss/postcss
 [ci-img]: https://travis-ci.org/tbekaert/postcss-cleaner.svg
@@ -14,6 +15,8 @@
 [dep]: https://david-dm.org/tbekaert/postcss-cleaner
 [depdev-img]: https://david-dm.org/tbekaert/postcss-cleaner/dev-status.svg
 [depdev]: https://david-dm.org/tbekaert/postcss-cleaner?type=dev
+[coveralls-img]: https://coveralls.io/repos/github/tbekaert/postcss-cleaner/badge.svg?branch=master
+[coveralls]: https://coveralls.io/github/tbekaert/postcss-cleaner?branch=master
 
 ## Description
 

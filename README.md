@@ -121,6 +121,6 @@ tr td {
 
 ## To do
 
-* [ ] Improve test suite
+* [x] Improve test suite
 * [ ] Improve doc
 * [ ] Clean plugin's code

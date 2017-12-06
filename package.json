@@ -20,12 +20,23 @@
     "postcss": "^6.0.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "eslint": "^4.12.1",
     "eslint-config-postcss": "^2.0.2",
     "jest": "^21.2.1"
   },
   "scripts": {
-    "test": "jest && eslint *.js"
+    "test": "jest --coverage && eslint *.js",
+    "cover": "jest --coverage && open ./coverage/lcov-report/index.html",
+    "coveralls": "(cat ./coverage/lcov.info | coveralls) || exit 0",
+    "rebuild": "rm -rf node_modules && npm install",
+    "precommit": "npm run test"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "index.js"
+    ]
   },
   "eslintConfig": {
     "extends": "eslint-config-postcss",

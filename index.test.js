@@ -105,13 +105,19 @@ it('remove unused multi selector in rule', () => {
     });
 });
 
-it('remove unused selector if any selector is not found', () => {
+it('remove unused selector if any child selector is not found', () => {
     return run('.foo .bar, .foo .baz{ }', '.foo .baz{ }', {
         raw: `
           <div class="foo">
             <p class="baz">Lorem</p>
           </div>
         `
+    });
+});
+
+it('remove unused selector if it is not found', () => {
+    return run('.sm-foo, .foo .bar{ } .md-foo{ }', '.md-foo{ }', {
+        raw: '<div class="md-foo bar"></div>'
     });
 });
 

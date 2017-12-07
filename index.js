@@ -25,6 +25,11 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
             []
         );
 
+    let replace = (str, arr, repl) =>
+        arr.reduce((result, reg) => result.replace(reg, repl), str);
+
+    RegExp.escape = s => s.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+
     let getFilesContent = function() {
         let patterns = flatten(arguments[0]);
 
@@ -74,52 +79,87 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
                         .replace(/[\n]/, '')
                         .split(',');
                     let testSelectors = selectors.map(s => {
-                        return s
-                            .replace(/\.|#|\=|(\[[^=]*=)|\]/g, ' ')
-                            .replace(/\[/g, ' ')
-                            .replace(
-                                />|~|\+|\'|"|\n|\t|\*|:not\([^\)]*\)|(::?[^\s:]*)/g,
-                                ''
-                            )
+                        s = replace(
+                            s,
+                            [
+                                /\./g,
+                                /\#/g,
+                                /\=/g,
+                                /(\[[^=]*=)/g,
+                                /\[/g,
+                                /\]/g,
+                                />/g,
+                                /\+/g,
+                                /~/g
+                            ],
+                            ' '
+                        );
+                        s = replace(
+                            s,
+                            [
+                                /\//g,
+                                /"/g,
+                                /\n/g,
+                                /\t/g,
+                                /\*/g,
+                                /:not\([^\)]*\)/g,
+                                /(::?[^\s:]*)/g
+                            ],
+                            ''
+                        );
+                        s = s
                             .split(' ')
-                            .filter(sel => sel !== '');
+                            .filter(sel => sel !== '' && !/^[0-9]/.test(sel));
+
+                        return s;
                     });
 
-                    testSelectors.map((sel, i) => {
-                        let isIgnored = sel
-                            .map(s => {
-                                return opts.ignore
-                                    .map(r => {
-                                        return typeof r === 'string'
-                                            ? r.replace(/\.|#/g, '') === s
-                                            : r.test(s);
-                                    })
-                                    .reduce((r, b) => r || b, false);
+                    let index = testSelectors.length - 1;
+                    while (index >= 0) {
+                        let sel = testSelectors[index];
+
+                        let isIgnored = opts.ignore
+                            .map(r => {
+                                return typeof r === 'string'
+                                    ? selectors[index].indexOf(r) >= 0
+                                    : r.test(selectors[index]);
                             })
-                            .reduce((s, b) => s || b, false);
+                            .reduce((r, b) => r || b, false);
 
                         if (!isIgnored) {
                             let isFound = sel
-                                .map(s => opts.raw.indexOf(s) >= 0)
+                                .map(s => {
+                                    let reg = new RegExp(
+                                        '(\\.|#| |"|\'|<|\\[)(' +
+                                            RegExp.escape(s) +
+                                            // ')',
+                                            ')(\\.|#| |"|\'|>|\\]|\\n|[\\d\\w])',
+                                        'g'
+                                    );
+
+                                    return reg.exec(opts.raw) !== null;
+                                })
                                 .reduce((s, b) => (!s ? s : b), true);
 
                             if (!isFound) {
-                                selectors[i] &&
-                                    log('removedRules', [
-                                        `Remove selector '${
-                                            selectors[i]
-                                        }' line ${rule.source.start.line}`
-                                    ]);
-                                selectors.splice(i, 1);
+                                log('removedRules', [
+                                    `Remove selector '${
+                                        selectors[index]
+                                    }' line ${rule.source.start.line}`
+                                ]);
+
+                                selectors.splice(index, 1);
                             }
                         } else {
                             log('ignoredRules', [
-                                `Ignore selector '${selectors[i]}' line ${
+                                `Ignore selector '${selectors[index]}' line ${
                                     rule.source.start.line
                                 }`
                             ]);
                         }
-                    });
+
+                        index--;
+                    }
 
                     rule.selector = selectors.map(s => s.trim()).join(', ');
 

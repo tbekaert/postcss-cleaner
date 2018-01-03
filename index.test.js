@@ -4,7 +4,7 @@ let plugin = require('./');
 
 function run(input, output, opts) {
     return postcss([plugin(opts)])
-        .process(input)
+        .process(input, { from: undefined })
         .then(result => {
             expect(result.css).toEqual(output);
             expect(result.warnings().length).toBe(0);
@@ -13,7 +13,7 @@ function run(input, output, opts) {
 
 function runError(input, output, opts) {
     return postcss([plugin(opts)])
-        .process(input)
+        .process(input, { from: undefined })
         .then(result => {
             expect(result.css).toEqual(output);
             expect(result.warnings().length).toBeGreaterThan(0);
@@ -26,7 +26,7 @@ function runLog(input, output, opts) {
     console.log = jest.fn(storeLog);
 
     return postcss([plugin(opts)])
-        .process(input)
+        .process(input, { from: undefined })
         .then(result => {
             expect(logs.join('\n')).toBe(output.join('\n'));
             expect(result.warnings().length).toBe(0);

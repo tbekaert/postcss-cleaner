@@ -4,9 +4,7 @@ let postcss = require('postcss');
 let glob = require('glob');
 let fs = require('fs');
 
-module.exports = postcss.plugin('postcss-cleaner', opts => {
-    opts = opts || {};
-
+module.exports = postcss.plugin('postcss-cleaner', (opts = {}) => {
     let log = function(type, args) {
         if (opts.log) {
             if (

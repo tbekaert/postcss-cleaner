@@ -1,6 +1,6 @@
 {
   "name": "postcss-cleaner",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "PostCSS plugin to clean unused CSS",
   "keywords": [
     "postcss",
@@ -57,9 +57,14 @@
       "operator-linebreak": 0,
       "max-len": 0,
       "prefer-rest-params": 0,
-      "node/no-extraneous-require": ["error", {
-        "allowModules": ["glob"]
-      }],
+      "node/no-extraneous-require": [
+        "error",
+        {
+          "allowModules": [
+            "glob"
+          ]
+        }
+      ],
       "security/detect-non-literal-regexp": 0
     }
   }

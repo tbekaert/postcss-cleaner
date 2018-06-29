@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
-    "eslint": "^4.14.0",
+    "eslint": "^5.0.1",
     "eslint-config-logux": "^23.0.0",
     "eslint-config-postcss": "^3.0.1",
     "eslint-config-standard": "^11.0.0",

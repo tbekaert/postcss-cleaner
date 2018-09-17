@@ -33,7 +33,7 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
   RegExp.escape = s => s.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&')
 
   function getFilesContent() {
-    const patterns = flatten(arguments[0])
+    let patterns = flatten(arguments[0])
 
     log('sourcesList', ['=== Source files ==='])
 
@@ -41,7 +41,7 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
       patterns.map(pattern => {
         return glob.sync(pattern).map(file => {
           log('sourcesList', [file])
-          const content = fs.readFileSync(file)
+          let content = fs.readFileSync(file)
           return content
         })
       })
@@ -77,10 +77,10 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
             }`
           ])
         } else {
-          const selectors = rule.selector
+          let selectors = rule.selector
             .replace(/[\n]/, '')
             .split(',')
-          const testSelectors = selectors.map(s => {
+          let testSelectors = selectors.map(s => {
             s = replace(
               s, [
                 /\./g,
@@ -116,18 +116,18 @@ module.exports = postcss.plugin('postcss-cleaner', opts => {
 
           let index = testSelectors.length - 1
           while (index >= 0) {
-            const sel = testSelectors[index]
+            let sel = testSelectors[index]
 
-            const isIgnored = opts.ignore
+            let isIgnored = opts.ignore
               .map(r => {
                 return typeof r === 'string' ? selectors[index].indexOf(r) >= 0 : r.test(selectors[index])
               })
               .reduce((r, b) => r || b, false)
 
             if (!isIgnored) {
-              const isFound = sel
+              let isFound = sel
                 .map(s => {
-                  const reg = new RegExp(
+                  let reg = new RegExp(
                     '(\\.|#| |"|\'|<|\\[)(' +
                     RegExp.escape(s) +
                     ')(\\.|#| |"|\'|>|\\]|\\n|[\\d\\w])',

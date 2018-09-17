@@ -11,7 +11,7 @@ const plugin = require('./')
 it('return same CSS and a warning if no sources provided', () => {
   let input = 'a{ }'
   let output = 'a{ }'
-  let opts = {}
+  let opts
 
   return postcss([plugin(opts)])
     .process(input, {
